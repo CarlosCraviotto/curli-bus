@@ -10,6 +10,8 @@ Simple Command Bus Implementation (CQRS) for NodeJS/Typescript.
 ### Motivation
 There are a lot of bus CQRS libraries for JavaScript/Typescript out there, this is not new.  The one thing we're trying to achieve here is the ability to take advantage of such a library but without coupling it into the application's domain. The main goal here is to create a library that you can use without using third part code into your domains.
 
+
+
 ### Installation
 
 Install by `npm`
@@ -17,30 +19,101 @@ Install by `npm`
 ```sh
 npm install --save curli-bus
 ```
+
+
 #### Basic Usage
 
 ```typescript
 import {BusSync, CommandInstanceType} from "curli-bus";
 
 class CommandTest {
-
     public constructor (private name: string){
     }
-
 }
 
 const bus = new BusSync();
-const commandTest = new CommandTest('test');
 
 bus.registerHandler(CommandTest, function (command: CommandInstanceType): any {
     container.get('useCase').execute(command);
 });
 
+const commandTest = new CommandTest('test');
 bus.dispatch(commandTest);
+```
+
+
+
+#### Registering command using string name
+
+```typescript
+
+bus.registerHandler('CommandTest', function (command: CommandInstanceType): any {
+    container.get('useCase').execute(command);
+});
+
+const commandTest = new CommandTest('test');
+bus.dispatch(commandTest);
+```
+
+
+
+#### Using options
+
+We can send options to the handler through all the middleware.
+
+```typescript
+bus.registerHandler('CommandTest', function (command: CommandInstanceType, options?: any): any {
+    container.get('useCase').execute(command, options);
+});
+
+bus.dispatch(commandTest, {"dev": true});
+```
+
+
+
+#### Using middleware
+
+```typescript
+import {BusSync, CommandInstanceType, Middleware} from "curli-bus";
+
+class CommandTest {
+    public constructor (private name: string){
+    }
+    
+    public addToName (toAdd: string) {
+        this.name = this.name + ' - ' + toAdd + ' -';
+    }
+}
+
+class MiddlewareTest extends Middleware {
+    execute (command: CommandInstanceType, next: (a: any) => any): any {
+        command.addToName('preHandler');
+        command = next(command);
+        command.addToName('postHandler');
+        return command;
+    }
+}
+
+const bus = new BusSync();
+const commandTest = new CommandTest('test');
+
+bus.addMiddleware(new MiddlewareTest());
+
+bus.registerHandler(CommandTest, function (command: CommandInstanceType): any {
+    command.addToName('hendler');
+    container.get('useCase').execute(command);
+});
+
+commandTest = bus.dispatch(commandTest);
+
+console.log(commandTest.name);
+//test - preHandler - hendler - postHandler -
 
 
 ```
 
+
+### 
 
 ### Commands
 
@@ -52,5 +125,8 @@ bus.dispatch(commandTest);
  - `npm run lint`: Check the code using the rules in .eslintre.js
  - `npm run lint:fix`: Check the code and try to fix it.
 
+
+
 ### License
+
 MIT

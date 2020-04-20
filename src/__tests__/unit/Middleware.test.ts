@@ -20,7 +20,6 @@ class CommandTest {
 class MiddlewareTest extends Middleware {
 
     execute (command: CommandInstanceType, next: (a: any) => any): any {
-        // console.log('Execute middlewate test -> ' + command.name);
         command.addToName('preHandler');
         command = next(command);
         command.addToName('postHandler');
