@@ -1,35 +1,36 @@
-import {CommandInstanceType, HandlerType, HandlerFunctionType} from "../Types";
+import {CommandInstanceType, HandlerType, HandlerFunctionType} from '../Types';
 
 export class HandlerModel {
 
-    public constructor(
+    public constructor (
         private commandName: string,
         private handler: HandlerType | HandlerFunctionType
     ) {
     }
 
-    public isThisCommandName(commandName: string): boolean {
+    public isThisCommandName (commandName: string): boolean {
         return (this.commandName === commandName);
     }
 
-    public callHandler<T>(command: CommandInstanceType, options?: T) {
+    public callHandler<T> (command: CommandInstanceType, options?: T): any {
         const handler = this.handler;
-        if (this.determineHandlerIsFunction(handler)) {
-            return <HandlerFunctionType>handler(command, options);
 
+        if (this.determineHandlerIsFunction(handler)) {
+            return (handler as HandlerFunctionType)(command, options);
         } else {
-            return <HandlerType>handler.handleCommand(command, options);
+            return (handler as HandlerType).handleCommand(command, options);
         }
     }
 
-    private determineHandlerIsFunction(
+    private determineHandlerIsFunction (
         handler: HandlerType | HandlerFunctionType
     ): handler is HandlerFunctionType {
 
-        //if it doesn't have the method handleCommand, it is a function.
+        // if it doesn't have the method handleCommand, it is a function.
         if (!(handler as HandlerType).handleCommand) {
             return true;
         }
         return false;
     }
+
 }

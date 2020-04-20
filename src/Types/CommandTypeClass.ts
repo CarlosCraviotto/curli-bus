@@ -1,3 +1,3 @@
 export type CommandTypeClass = {
-    name: string
+    name: string;
 }

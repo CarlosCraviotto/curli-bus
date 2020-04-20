@@ -1,6 +1,5 @@
-import {CommandInstanceType} from "../Types";
-import {NextFunctionType} from "../Types/NextFunctionType";
-
+import {CommandInstanceType} from '../Types';
+import {NextFunctionType} from '../Types/NextFunctionType';
 
 /**
  * Abstract class for a middleware
@@ -14,7 +13,8 @@ export class Middleware {
      * @param next
      * @param options
      */
-    public execute <T>(_command: CommandInstanceType, _next: NextFunctionType, _options?: T): any {
+    public execute <T> (_command: CommandInstanceType, _next: NextFunctionType, _options?: T): any {
         throw new Error('Execute method must be implemented in Middleware class.');
     }
+
 }

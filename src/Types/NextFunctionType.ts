@@ -1,1 +1,1 @@
-export type NextFunctionType = <T>(results?: T)=>T;
+export type NextFunctionType = <T>(results?: T) => T;

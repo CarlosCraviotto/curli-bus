@@ -1,11 +1,12 @@
 
-import {CommandInstanceType} from "../Types";
-import {Middleware} from "./Middleware";
+import {CommandInstanceType} from '../Types';
+import {Middleware} from './Middleware';
 
 export class MiddlewareCollection {
+
     private collection: Array<Middleware>;
 
-    public constructor() {
+    public constructor () {
         this.collection = [];
     }
 
@@ -13,7 +14,7 @@ export class MiddlewareCollection {
      * Add a middleware to the collection
      * @param middleware
      */
-    public add(middleware: Middleware) {
+    public add (middleware: Middleware) {
         this.collection.push(middleware);
     }
 
@@ -23,7 +24,7 @@ export class MiddlewareCollection {
      * @param command A command instance previously registered.
      * @param options It can be anything and it is sent all the times.
      */
-    public execute<T>(command: CommandInstanceType, options?: T): any {
+    public execute<T> (command: CommandInstanceType, options?: T): any {
         const runCommandInMiddlewareCollection = this.collection.reduceRight(
             (next, middleware: Middleware) => {
                 return middleware.execute.bind(middleware, command, next, options);
@@ -37,7 +38,8 @@ export class MiddlewareCollection {
     /**
      * Remove the las item of the collection
      */
-    public removeLast(): void {
+    public removeLast (): void {
         this.collection.pop();
     }
+
 }

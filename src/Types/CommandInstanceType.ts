@@ -1,4 +1,4 @@
 export type CommandInstanceType = {
-    constructor: { name: string }
-    [key: string]: any
+    constructor: { name: string };
+    [key: string]: any;
 }
