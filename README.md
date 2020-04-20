@@ -20,11 +20,24 @@ npm install --save curli-bus
 #### Basic Usage
 
 ```typescript
-import {BusSync} from "curli-bus";
+import {BusSync, CommandInstanceType} from "curli-bus";
 
+class CommandTest {
 
-//creating the service
-const foo = container.get("foo");
+    public constructor (private name: string){
+    }
+
+}
+
+const bus = new BusSync();
+const commandTest = new CommandTest('test');
+
+bus.registerHandler(CommandTest, function (command: CommandInstanceType): any {
+    container.get('useCase').execute(command);
+});
+
+bus.dispatch(commandTest);
+
 
 ```
 
