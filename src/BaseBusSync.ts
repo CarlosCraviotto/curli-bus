@@ -18,7 +18,7 @@ import {
 /**
  * Class for the BusSync
  */
-export class BusSync {
+export class BaseBusSync {
 
     private readonly middlewareList: MiddlewareCollection;
     private readonly handlersCollection: HandlersCollection;
@@ -61,7 +61,7 @@ export class BusSync {
      * @param command An instance of a class already declared in.
      * @param options It will be sent to all the middlewares an to the handler
      */
-    public dispatch<T> (command: CommandInstanceType, options?: T): any {
+    public process<T> (command: CommandInstanceType, options?: T): any {
         // add the commands to the list
         this.middlewareList.add(this.commandsMiddleware);
         // execute all the middlewares and return the result

@@ -1,8 +1,8 @@
 import chai = require('chai');
-import {BusSync} from '../../BusSync';
+import {CommandBusSync} from '../../CommandBusSync';
 import {CommandInstanceType} from '../../Types';
 
-let bus: BusSync;
+let bus: CommandBusSync;
 
 class CommandTest {
 
@@ -18,11 +18,11 @@ let nameProperty = 'test';
 let commandTest: CommandTest = new CommandTest();
 let commandTest2: CommandTest2 = new CommandTest2();
 
-describe('Bus Sync query/command app', function () {
+describe('Command BusSync app', function () {
 
     beforeEach(()=>{
 
-        bus = new BusSync();
+        bus = new CommandBusSync();
 
         nameProperty = 'test';
         commandTest = new CommandTest();

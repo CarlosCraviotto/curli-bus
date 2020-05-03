@@ -1,3 +1,3 @@
-export {BusSync} from './BusSync';
+export {CommandBusSync} from './CommandBusSync';
 export {Middleware} from './Middleware';
 export {CommandInstanceType} from './Types';

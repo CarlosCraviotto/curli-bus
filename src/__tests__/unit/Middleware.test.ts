@@ -1,9 +1,9 @@
 import chai = require('chai');
-import {BusSync} from '../../BusSync';
+import {CommandBusSync} from '../../CommandBusSync';
 import {CommandInstanceType} from '../../Types';
 import {Middleware} from '../../Middleware/Middleware';
 
-let bus: BusSync;
+let bus: CommandBusSync;
 
 class CommandTest {
 
@@ -34,7 +34,7 @@ let commandTest: CommandTest = new CommandTest();
 describe('Middleware tests', function () {
 
     beforeEach(() => {
-        bus = new BusSync();
+        bus = new CommandBusSync();
         nameProperty = 'test';
         commandTest = new CommandTest();
         commandTest.name = nameProperty;

@@ -20,18 +20,19 @@ Install by `npm`
 npm install --save curli-bus
 ```
 
-
 #### Basic Usage
 
+#### Command Bus:
+
 ```typescript
-import {BusSync, CommandInstanceType} from "curli-bus";
+import {CommandBusSync, CommandInstanceType} from "curli-bus";
 
 class CommandTest {
     public constructor (private name: string){
     }
 }
 
-const bus = new BusSync();
+const commandBus = new CommandBusSync();
 
 bus.registerHandler(CommandTest, function (command: CommandInstanceType): any {
     container.get('useCase').execute(command);
@@ -112,10 +113,104 @@ console.log(commandTest.name);
 
 ```
 
+ 
 
-### 
+#### Query Bus:
 
-### Commands
+```typescript
+import {QueryBusSync, QueryInstanceType} from "curli-bus";
+
+class QueryTest {
+    public constructor (private name: string){
+    }
+}
+
+const queryBus = new QueryBusSync();
+
+bus.registerHandler(QueryTest, function (query: QueryInstanceType): any {
+    container.get('useCase').execute(query);
+});
+
+const queryTest = new QueryTest('test');
+const result = bus.ask(queryTest);
+```
+
+
+
+#### Registering query using string name
+
+```typescript
+bus.registerHandler('QueryTest', function (query: QueryInstanceType): any {
+    container.get('useCase').execute(query);
+});
+
+const queryTest = new QueryTest('test');
+const result = bus.ask(queryTest);
+```
+
+
+
+#### Using options
+
+We can send options to the handler through all the middleware.
+
+```typescript
+bus.registerHandler('QueryTest', function (query: QueryInstanceType, options?: any): any {
+    container.get('useCase').execute(query, options);
+});
+
+const result = bus.ask(queryTest, {"dev": true});
+```
+
+
+
+#### Using middleware
+
+```typescript
+import {BusSync, QueryInstanceType, Middleware} from "curli-bus";
+
+class QueryTest {
+    public constructor (private name: string){
+    }
+    
+    public addToName (toAdd: string) {
+        this.name = this.name + ' - ' + toAdd + ' -';
+    }
+}
+
+class MiddlewareTest extends Middleware {
+    execute (query: QueryInstanceType, next: (a: any) => any): any {
+        query.addToName('preHandler');
+        query = next(query);
+        query.addToName('postHandler');
+        return query;
+    }
+}
+
+const bus = new BusSync();
+const queryTest = new QueryTest('test');
+
+bus.addMiddleware(new MiddlewareTest());
+
+bus.registerHandler(QueryTest, function (query: QueryInstanceType): any {
+    query.addToName('hendler');
+    container.get('useCase').execute(query);
+});
+
+const result = bus.ask(queryTest);
+
+console.log(result.name);
+//test - preHandler - hendler - postHandler -
+
+
+```
+
+
+ 
+
+
+
+#### Commands
 
  - `npm run build`: Build the project (Bus).
  - `npm run build:clean`: Delete first the dist folder and build it.
@@ -127,6 +222,38 @@ console.log(commandTest.name);
 
 
 
-### License
+#### Contributing
+
+When submitting your pull-request try to follow those guides:
+
+- https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
+
+- https://medium.com/@vadimdemedes/making-your-first-contribution-de6576ddb190
+
+  
+
+### Changelog
+
+All notable changes to this project will be documented in this section.
+
+### 0.0.2
+
+#### Added
+
+- QueryBusSync support
+
+#### Changed
+
+- BusSync interface will be CommandBusSync 
+
+### 0.0.1
+
+#### Added
+
+- CommandBusSync support
+
+
+
+#### License
 
 MIT
