@@ -1,5 +1,6 @@
 import {CommandInstanceType} from './CommandInstanceType';
+import {QueryInstanceType} from './QueryInstanceType';
 
 export type HandlerType = {
-    handleCommand <T>(command: CommandInstanceType, options?: T): any;
+    handleCommand <T>(request: CommandInstanceType | QueryInstanceType, options?: T): any;
 };
