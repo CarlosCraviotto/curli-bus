@@ -8,7 +8,7 @@ import {
 import {
     Middleware,
     MiddlewareCollection,
-    CommandsMiddleware,
+    HandlersMiddleware,
 } from './Middleware';
 
 import {
@@ -22,12 +22,12 @@ export class BaseBusSync {
 
     private readonly middlewareList: MiddlewareCollection;
     private readonly handlersCollection: HandlersCollection;
-    private readonly commandsMiddleware: CommandsMiddleware;
+    private readonly handlersMiddleware: HandlersMiddleware;
 
     public constructor () {
         this.middlewareList = new MiddlewareCollection();
         this.handlersCollection = new HandlersCollection();
-        this.commandsMiddleware = new CommandsMiddleware(this.handlersCollection);
+        this.handlersMiddleware = new HandlersMiddleware(this.handlersCollection);
     }
 
     /**
@@ -63,11 +63,11 @@ export class BaseBusSync {
      */
     public process<T> (command: CommandInstanceType, options?: T): any {
         // add the commands to the list
-        this.middlewareList.add(this.commandsMiddleware);
+        this.middlewareList.add(this.handlersMiddleware);
         // execute all the middlewares and return the result
         const result: any = this.middlewareList.execute(command, options);
 
-        // remove the commandsMiddleware, so we have the list of
+        // remove the handlersMiddleware, so we have the list of
         // middlewares clean to add more in runtime if need it.
         this.middlewareList.removeLast();
 

@@ -1,5 +1,5 @@
 
-import {CommandInstanceType} from '../Types';
+import {CommandInstanceType, QueryInstanceType} from '../Types';
 import {Middleware} from './Middleware';
 
 export class MiddlewareCollection {
@@ -21,18 +21,18 @@ export class MiddlewareCollection {
     /**
      * Execute all the middlewares in the collection.
      *
-     * @param command A command instance previously registered.
+     * @param request A command | query instance previously registered.
      * @param options It can be anything and it is sent all the times.
      */
-    public execute<T> (command: CommandInstanceType, options?: T): any {
-        const runCommandInMiddlewareCollection = this.collection.reduceRight(
+    public execute<T> (request: CommandInstanceType | QueryInstanceType, options?: T): any {
+        const runRequestInMiddlewareCollection = this.collection.reduceRight(
             (next, middleware: Middleware) => {
-                return middleware.execute.bind(middleware, command, next, options);
+                return middleware.execute.bind(middleware, request, next, options);
             },
             (results: any) => results
         );
 
-        return runCommandInMiddlewareCollection(command);
+        return runRequestInMiddlewareCollection(request);
     }
 
     /**

@@ -1,6 +1,6 @@
 {
   "name": "curli-bus",
-  "version": "0.0.2-beta.1",
+  "version": "0.0.2-beta.2",
   "description": "Simple Command Bus Implementation (CQRS) for NodeJS/Typescript.",
   "main": "index",
   "scripts": {
@@ -10,7 +10,10 @@
     "test": "mocha -r ts-node/register src/__tests__/unit/*.test.ts",
     "test:coverage": "nyc -r lcov -e .ts -x \"src/__tests__/unit/*.test.ts\" npm run test",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" \"./src\"",
-    "lint:fix": "eslint --fix --ext \".js,.jsx,.ts,.tsx\" \"./src\""
+    "lint:fix": "eslint --fix --ext \".js,.jsx,.ts,.tsx\" \"./src\"",
+    "npm:alone": "npm install && npm run clean && npm run build && npm run test:coverage",
+    "npm": "npm run npm:alone && npm publish",
+    "npm:beta": "npm run npm:alone && npm publish --tag beta"
   },
   "repository": {
     "type": "git",
