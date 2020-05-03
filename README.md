@@ -121,7 +121,7 @@ console.log(commandTest.name);
 import {QueryBusSync, QueryInstanceType} from "curli-bus";
 
 class QueryTest {
-    public constructor (private name: string){
+    public constructor (private query: object){
     }
 }
 
@@ -131,7 +131,7 @@ bus.registerHandler(QueryTest, function (query: QueryInstanceType): any {
     container.get('useCase').execute(query);
 });
 
-const queryTest = new QueryTest('test');
+const queryTest = new QueryTest({'name': 'test'});
 const result = bus.ask(queryTest);
 ```
 
@@ -144,7 +144,7 @@ bus.registerHandler('QueryTest', function (query: QueryInstanceType): any {
     container.get('useCase').execute(query);
 });
 
-const queryTest = new QueryTest('test');
+const queryTest = new QueryTest({'name': 'test'});
 const result = bus.ask(queryTest);
 ```
 
@@ -206,7 +206,7 @@ console.log(result.name);
 ```
 
 
- 
+
 
 
 
