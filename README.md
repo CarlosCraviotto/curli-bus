@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/CarlosCraviotto/curli-bus.svg?branch=master)](https://travis-ci.com/github/CarlosCraviotto/curli-bus)
 [![Coverage Status](https://coveralls.io/repos/github/CarlosCraviotto/curli-bus/badge.svg?branch=master&cach=ff)](https://coveralls.io/github/CarlosCraviotto/curli-bus?branch=master)
 
-Simple Command Bus Implementation (CQRS) for NodeJS/Typescript.
+Simple Command/Query/Event Bus Implementation to use with CQRS or DDD for NodeJS/Typescript.
 
 
 ### Motivation
@@ -206,6 +206,36 @@ console.log(result.name);
 ```
 
 
+#### Event Bus
+
+We can create an event bus and send events throw it.
+
+```typescript
+import {EventBus} from "curli-bus";
+
+class UserCreatedEvent {
+    public eventName = 'user_created';
+    public dateTimeOccurred?: Date;
+    public constructor(public data: {[key:string]: any}) {
+    }
+}
+
+class OnUserCreatedEventHandler {
+    public getEventName(): string {
+    return 'user_created';
+    }
+    public handle (event: Event): any{
+       //... stuff
+    }
+}
+
+const eventBus = new EventBus();
+
+eventBus.register(new OnUserCreatedEventHandler());
+
+const event = new UserCreatedEvent({userName: 'Josh', email:'josh@notexist.com'});
+eventBus.publish(event);
+```
 
 
 
