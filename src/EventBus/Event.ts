@@ -1,6 +1,6 @@
 export type Event = {
     /**
-     * The event name, It must be the same as the event handler return in getEventName
+     * The event name, It must be the same as the event Subscriber return in getEventName
      */
     eventName: string,
 

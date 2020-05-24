@@ -1,3 +1,3 @@
 export {EventBus} from './EventBus';
-export {EventHandler} from './EventHandler';
+export {EventSubscriber} from './EventSubscriber';
 export {Event} from './Event';

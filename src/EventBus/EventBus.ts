@@ -1,25 +1,25 @@
-import {EventHandler} from "./EventHandler";
+import {EventSubscriber} from "./EventSubscriber";
 import {Event} from "./Event";
 
 
 export class EventBus {
-    private handlersMap: { [key: string]: Array<EventHandler> };
+    private subscribersMap: { [key: string]: Array<EventSubscriber> };
 
     public constructor() {
-        this.handlersMap = {};
+        this.subscribersMap = {};
     }
 
     /**
      * @method register
-     * @desc Register a handler to a domain event.
+     * @desc Register a subscriber to a domain event.
      */
-    public register(eventHandler: EventHandler): void {
-        const eventClassName = eventHandler.getEventName();
+    public register(eventSubscriber: EventSubscriber): void {
+        const eventClassName = eventSubscriber.getEventName();
 
-        if (!this.handlersMap.hasOwnProperty(eventClassName)) {
-            this.handlersMap[eventClassName] = [];
+        if (!this.subscribersMap.hasOwnProperty(eventClassName)) {
+            this.subscribersMap[eventClassName] = [];
         }
-        this.handlersMap[eventClassName].push(eventHandler);
+        this.subscribersMap[eventClassName].push(eventSubscriber);
     }
 
     /**
@@ -28,14 +28,14 @@ export class EventBus {
      */
     public publish(event: Event): void {
 
-        if (!this.handlersMap.hasOwnProperty(event.eventName)) {
-            throw new Error(`There is not a handler for ${event.eventName} event.`);
+        if (!this.subscribersMap.hasOwnProperty(event.eventName)) {
+            throw new Error(`There is not a subscriber for ${event.eventName} event.`);
         }
 
         event.dateTimeOccurred = event.dateTimeOccurred ?? new Date();
 
-        this.handlersMap[event.eventName].map((handler: EventHandler) => {
-            handler.handle(event);
+        this.subscribersMap[event.eventName].map((subscriber: EventSubscriber) => {
+            subscriber.handle(event);
         });
     }
 }

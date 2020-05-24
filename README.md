@@ -220,20 +220,22 @@ class UserCreatedEvent {
     }
 }
 
-class OnUserCreatedEventHandler {
+class OnUserCreatedEventSubscriber {
     public getEventName(): string {
-    return 'user_created';
+    	return 'user_created';
     }
     public handle (event: Event): any{
-       //... stuff
+       //... Do stuff with the event
     }
 }
 
 const eventBus = new EventBus();
 
-eventBus.register(new OnUserCreatedEventHandler());
+eventBus.register(new OnUserCreatedEventSubscriber());
 
-const event = new UserCreatedEvent({userName: 'Josh', email:'josh@notexist.com'});
+const event = new UserCreatedEvent(
+    {userName: 'Josh', email:'josh@notexist.com'}
+);
 eventBus.publish(event);
 ```
 
@@ -265,6 +267,12 @@ When submitting your pull-request try to follow those guides:
 ### Changelog
 
 All notable changes to this project will be documented in this section.
+
+### 0.1.0
+
+#### Added
+
+- Event bus support
 
 ### 0.0.2
 

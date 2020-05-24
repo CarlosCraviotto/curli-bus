@@ -13,7 +13,7 @@ class EventTest {
     }
 }
 
-class EventHandler {
+class EventSubscriber {
     public getEventName(): string {
     return 'event_test';
     }
@@ -30,40 +30,40 @@ describe('EventBus class tests', function () {
     });
 
     it('Should publish an event', function () {
-        const handler = new EventHandler();
+        const subscriber = new EventSubscriber();
 
-        handler.handle = (event: Event)=>{
+        subscriber.handle = (event: Event)=>{
             chai.assert.deepEqual('carlos', event.data.name);
         };
 
-        eventBus.register(handler);
+        eventBus.register(subscriber);
 
         const event = new EventTest({name: 'carlos'});
         eventBus.publish(event);
     });
-    it('Should publish an event wit a few handlers', function () {
-        const handler1 = new EventHandler();
-        const handler2 = new EventHandler();
-        const handler3 = new EventHandler();
-        let timesHandlers = 0;
+    it('Should publish an event wit a few subscribers', function () {
+        const subscriber1 = new EventSubscriber();
+        const subscriber2 = new EventSubscriber();
+        const subscriber3 = new EventSubscriber();
+        let timesSubscribers = 0;
 
-        const handlerFunction = (_event: Event)=>{
-            timesHandlers++;
+        const subscriberFunction = (_event: Event)=>{
+            timesSubscribers++;
         };
 
-        handler1.handle =handlerFunction;
-        handler2.handle =handlerFunction;
-        handler3.handle =handlerFunction;
+        subscriber1.handle =subscriberFunction;
+        subscriber2.handle =subscriberFunction;
+        subscriber3.handle =subscriberFunction;
 
-        eventBus.register(handler1);
-        eventBus.register(handler2);
-        eventBus.register(handler3);
+        eventBus.register(subscriber1);
+        eventBus.register(subscriber2);
+        eventBus.register(subscriber3);
 
         const event = new EventTest({name: 'carlos'});
         event.dateTimeOccurred = new Date();
         eventBus.publish(event);
 
-        chai.assert.deepEqual(3, timesHandlers);
+        chai.assert.deepEqual(3, timesSubscribers);
     });
 
 
@@ -71,7 +71,7 @@ describe('EventBus class tests', function () {
         const event = new EventTest({name: 'carlos'});
         chai.assert.throws(function () {
             eventBus.publish(event);
-        }, 'There is not a handler for event_test event.');
+        }, 'There is not a subscriber for event_test event.');
     });
 
 });
