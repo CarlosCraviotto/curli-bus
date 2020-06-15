@@ -268,6 +268,12 @@ When submitting your pull-request try to follow those guides:
 
 All notable changes to this project will be documented in this section.
 
+### 0.2.1
+
+#### Changed
+
+- Expose Event interface and EventSubscriber type
+
 ### 0.2.0
 
 #### Added
