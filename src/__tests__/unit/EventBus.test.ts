@@ -41,6 +41,35 @@ describe('EventBus class tests', function () {
         const event = new EventTest({name: 'carlos'});
         eventBus.publish(event);
     });
+
+    it('Should publish a list of events', function () {
+        const subscriber = new EventSubscriber();
+        let checkTimesCallEventCarlos = 0;
+        let checkTimesCallEventMiguel = 0;
+
+        subscriber.handle = (event: Event) => {
+            if ('carlos' === event.data.name) {
+                checkTimesCallEventCarlos++;
+            } else if ('miguel' === event.data.name) {
+                checkTimesCallEventMiguel++;
+            }
+        };
+
+        eventBus.register(subscriber);
+
+        const event1 = new EventTest({name: 'carlos'});
+        const event2 = new EventTest({name: 'carlos'});
+        const event3 = new EventTest({name: 'carlos'});
+        const event4 = new EventTest({name: 'miguel'});
+
+        const eventsList: Array<Event> = [event1, event2, event3, event4];
+
+        eventBus.publish(eventsList);
+
+        chai.assert.deepEqual(3, checkTimesCallEventCarlos);
+        chai.assert.deepEqual(1, checkTimesCallEventMiguel);
+    });
+
     it('Should publish an event wit a few subscribers', function () {
         const subscriber1 = new EventSubscriber();
         const subscriber2 = new EventSubscriber();

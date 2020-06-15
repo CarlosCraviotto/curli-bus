@@ -23,10 +23,20 @@ export class EventBus {
     }
 
     /**
-     * Publish an event
-     * @param {Event} event
+     * Publish an event or a list of events.
+     * @param {Event|Array<Event>} event
      */
-    public publish(event: Event): void {
+    public publish(events: Event | Array<Event>): void {
+        if (Array.isArray(events)) {
+            events.forEach((event: Event) => {
+                this.publishSingleEvent(event);
+            });
+        } else {
+            this.publishSingleEvent(events);
+        }
+    }
+
+    public publishSingleEvent(event: Event): void {
 
         if (!this.subscribersMap.hasOwnProperty(event.eventName)) {
             throw new Error(`There is not a subscriber for ${event.eventName} event.`);

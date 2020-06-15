@@ -268,6 +268,12 @@ When submitting your pull-request try to follow those guides:
 
 All notable changes to this project will be documented in this section.
 
+### 0.2.0
+
+#### Added
+
+- Support publish multiple events (array) in event bus.
+
 ### 0.1.0
 
 #### Added

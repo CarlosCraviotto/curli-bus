@@ -1,6 +1,6 @@
 {
   "name": "curli-bus",
-  "version": "0.1.0-beta.1",
+  "version": "0.2.0-beta.0",
   "description": "Simple Command Bus Implementation (CQRS) for NodeJS/Typescript.",
   "main": "index",
   "scripts": {
